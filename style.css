@@ -40,7 +40,7 @@
 .header__to_do_inicial {
   display: flex;
   flex-direction: row;
-  margin: 6rem;
+  margin: 6rem 3rem 0.5rem;
 }
 
 .separacao__header {
@@ -48,6 +48,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 1rem;
 }
 
 .to__do_inicial {
@@ -59,11 +60,11 @@
 }
 
 
-.botao__adicao_list {
+.botao__criar_lista {
   display: flex;
   gap: 1rem;
   align-items: center;
-  background: none;
+  background-color: var(--dark-900);
   border: none;
   align-self: flex-end;
 }
@@ -75,3 +76,53 @@
   color: var(--primary);
   font-size: 18px;
 }
+
+.header__linha {
+  width: 95%;
+  margin: 0 auto;
+  height: 2px;
+  background: var(--dark-700);
+  border-radius: 2px; 
+}
+
+.lista__item {
+  margin: 2rem;
+  list-style: none;
+}
+
+.botao__li_seta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: var(--dark-900);
+  border: var(--dark-900);
+  box-shadow: 1px 5px 3px rgba(0, 0, 0, 0.45);
+  padding: 1rem;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.conteudo__lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
+.input__nome-lista {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+
+  &::placeholder {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--second-200);
+  }
+}
+
+
