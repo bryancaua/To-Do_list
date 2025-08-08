@@ -40,7 +40,7 @@
 .header__to_do_inicial {
   display: flex;
   flex-direction: row;
-  margin: 6rem 3rem 0.5rem;
+  margin: 4.5rem 3rem 0.5rem;
 }
 
 .separacao__header {
@@ -125,4 +125,24 @@
   }
 }
 
+.section__listas {
+  display: flex;
+  flex-direction: column;
+}
+
+.mensagem__lista_vazia {
+  padding-top: 8rem;
+  margin: 0 auto;
+}
+
+
+.p__mensagem_lista_vazia {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  color: var(--second-200);
+  text-align: center;
+  margin: 0.5rem;
+}
 

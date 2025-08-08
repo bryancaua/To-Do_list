@@ -2,6 +2,8 @@ const botaoCriarLista = document.querySelector('.botao__criar_lista');
 const ulListas = document.getElementById('ul__listas');
 
 
+// Função de criar listas ao clique
+
 botaoCriarLista.addEventListener('click', () => {
     
     const li = document.createElement ('li');
@@ -17,7 +19,7 @@ botaoCriarLista.addEventListener('click', () => {
     input.setAttribute('placeholder', 'Nova Lista');
     input.setAttribute('type', 'text');
 
-    img.classList.add("icone__seta");
+    img.classList.add('icone__seta');
     img.setAttribute('src', './assets/CaretRight.svg');
     img.setAttribute('alt', 'Seta direita');
     
@@ -27,4 +29,22 @@ botaoCriarLista.addEventListener('click', () => {
     li.appendChild(button);
     ulListas.appendChild(li);
     
+    verificarListaVazia();
 })
+
+
+// Função que irá verificar se a lista está vazia, caso sim, exibe uma sugestão ao usuário, se não, ela fica como 'none'
+
+const mensagemListaVazia = document.querySelector('.mensagem__lista_vazia');
+
+function verificarListaVazia() {
+    const itensDaLista = ulListas.querySelectorAll('li') 
+    
+    if (itensDaLista.length === 0) {
+        mensagemListaVazia.style.display = 'block';
+    } else {
+        mensagemListaVazia.style.display = 'none';
+    }
+}
+
+verificarListaVazia();
