@@ -1,45 +1,61 @@
+let contadorListas = 0; // contador global para gerar IDs únicos
+
 const botaoCriarLista = document.querySelector('.botao__criar_lista');
 const ulListas = document.getElementById('ul__listas');
 
-
-// Função de criar listas ao clique
-
 botaoCriarLista.addEventListener('click', () => {
-    
-    const li = document.createElement ('li');
-    const button = document.createElement ('button');
-    const div = document.createElement ('div');
-    const input = document.createElement ('input');
-    const img = document.createElement ('img');
+    contadorListas++; // incrementa para cada nova lista criada
+
+    const li = document.createElement('li');
+    const botaoListas = document.createElement('button');
+    const divListas = document.createElement('div');
+    const inputListas = document.createElement('input');
+    const imgListas = document.createElement('img');
 
     li.classList.add('lista__item');
-    button.classList.add('botao__li_seta');
-    div.classList.add('conteudo__lista')
-    input.classList.add('input__nome-lista');
-    input.setAttribute('placeholder', 'Nova Lista');
-    input.setAttribute('type', 'text');
+    li.dataset.id = contadorListas; // ID único
+    li.dataset.nome = ''; // aqui salva o nome posteriormente
 
-    img.classList.add('icone__seta');
-    img.setAttribute('src', './assets/CaretRight.svg');
-    img.setAttribute('alt', 'Seta direita');
-    
-    div.appendChild(input);
-    div.appendChild(img);
-    button.appendChild(div);
-    li.appendChild(button);
+    botaoListas.classList.add('botao__li_seta');
+    divListas.classList.add('conteudo__lista');
+    inputListas.classList.add('input__nome_lista');
+    inputListas.setAttribute('placeholder', 'Nova Lista');
+    inputListas.setAttribute('type', 'text');
+
+    imgListas.classList.add('icone__seta');
+    imgListas.setAttribute('src', './assets/CaretRight.svg');
+    imgListas.setAttribute('alt', 'Seta direita');
+
+    function salvarNome() {
+        const nome = inputListas.value.trim() || 'Nova Lista';
+        li.dataset.nome = nome; // salva no dataset
+        divListas.innerHTML = `${nome} <img class="icone__seta" src="./assets/CaretRight.svg" alt="Seta direita">`;
+    }
+
+    inputListas.addEventListener('blur', salvarNome);
+    inputListas.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // evita quebra de linha
+            salvarNome();
+        }
+    });
+
+    divListas.appendChild(inputListas);
+    divListas.appendChild(imgListas);
+    botaoListas.appendChild(divListas);
+    li.appendChild(botaoListas);
     ulListas.appendChild(li);
-    
+
     verificarListaVazia();
-})
+});
 
 
-// Função que irá verificar se a lista está vazia, caso sim, exibe uma sugestão ao usuário, se não, ela fica como 'none'
+// Função para checar se a lista está vazia
 
 const mensagemListaVazia = document.querySelector('.mensagem__lista_vazia');
 
 function verificarListaVazia() {
-    const itensDaLista = ulListas.querySelectorAll('li') 
-    
+    const itensDaLista = ulListas.querySelectorAll('li');
     if (itensDaLista.length === 0) {
         mensagemListaVazia.style.display = 'block';
     } else {
