@@ -7,6 +7,8 @@ botaoCriarLista.addEventListener('click', () => {
     contadorListas++; // incrementa para cada nova lista criada
 
     const li = document.createElement('li');
+    const botaoLixeiraListas = document.createElement('button');
+    const imgLixeira = document.createElement('img');
     const botaoListas = document.createElement('button');
     const divListas = document.createElement('div');
     const inputListas = document.createElement('input');
@@ -15,6 +17,11 @@ botaoCriarLista.addEventListener('click', () => {
     li.classList.add('lista__item');
     li.dataset.id = contadorListas; // ID único
     li.dataset.nome = ''; // aqui salva o nome posteriormente
+
+    botaoLixeiraListas.classList.add('lista__botao_lixeira');
+    imgLixeira.classList.add('lista__lixeira');
+    imgLixeira.setAttribute('src', './assets/Trash.svg');
+    imgListas.setAttribute('alt', 'Lixeira');
 
     botaoListas.classList.add('botao__li_seta');
     divListas.classList.add('conteudo__lista');
@@ -43,11 +50,24 @@ botaoCriarLista.addEventListener('click', () => {
     divListas.appendChild(inputListas);
     divListas.appendChild(imgListas);
     botaoListas.appendChild(divListas);
+    botaoLixeiraListas.appendChild(imgLixeira);
+    li.appendChild(botaoLixeiraListas);
     li.appendChild(botaoListas);
     ulListas.appendChild(li);
 
     verificarListaVazia();
 });
+
+
+ulListas.addEventListener('click', (e) => {
+    if (e.target.closest('.lista__lixeira')) {
+    const li = e.target.closest('li');
+    li.remove();
+    verificarListaVazia();
+    }
+});
+
+
 
 
 // Função para checar se a lista está vazia
