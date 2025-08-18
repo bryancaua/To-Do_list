@@ -11,18 +11,21 @@
 </head>
 <body class="body">
 
-    <header class="header__to_do_inicial">
+    <!-- Tela das listas -->
+    
+    <section class="tela__listas">
+        <header class="header__to_do_inicial">
 
-        <div class="separacao__header">
-            <h1 class="to__do_inicial">TO DO | YOUR LISTS</h1>
+            <div class="separacao__header">
+                <h1 class="to__do_inicial">TO DO | YOUR LISTS</h1>
 
-            <button class="botao__criar_lista">
-                <img src="./assets/PlusCircle.svg" alt="círculo de +">
-                <p class="p__botao_adicao_list">Adicionar nova lista</p>
-            </button>
-        </div>
+                <button class="botao__criar_lista" id="botao__criar_lista">
+                    <img src="./assets/PlusCircle.svg" alt="círculo de +">
+                    <p class="p__botao_adicao_list">Adicionar nova lista</p>
+                </button>
+            </div>
 
-    </header>
+        </header>
     
           <!-- Linha decorativa -->
         <div class="header__linha"></div>
@@ -33,15 +36,65 @@
 
         </ul>
 
-        <div class="mensagem__lista_vazia">
+        <div class="mensagem__vazia">
             <img src="./assets/MESSAGE_IF_EMPTY_TO_DO_LIST.svg" alt="Mensagem caso a lista esteja vazia com imagem">
-            <p class="p__mensagem_lista_vazia">Comece criando uma lista :)</p>
+            <p class="p__mensagem_vazia">Comece criando uma lista :)</p>
         </div>
-
     </section>
 
 
+    </section>
 
-     <script src="./scripts/script.js"></script>
+    <!-- Tela dos To-Dos -->
+
+    <section class="tela__to_dos">
+        
+        <header class="header__to_do_inicial">
+            <div class="separacao__header">
+
+                <div class="div__botao_voltar">
+
+                <button class="botao__voltar">
+                    <img src="./assets/ArrowCircleLeft.svg" alt="Voltar" class="img__voltar">
+                </button>
+                <h1 class="titulo__lista_todos">TO DO | YOUR LISTS</h1>
+
+                </div>
+
+
+                <button class="botao__criar_lista" id="botao__criar_to_do">
+                    <img src="./assets/CheckPlus.svg" alt="quadrado de +">
+                    <p class="p__botao_adicao_list">Adicionar to-do</p>
+                </button>
+            </div>
+        </header>
+
+         <div class="header__linha"></div>
+
+
+        <section class="section__listas">
+
+            <ul class="ul__to_do">
+                <li class="li__to_do">
+                    <button class="botao__to_do">
+                        <div class="div__li_to_do">
+                            <input type="checkbox" class="checkbox__to_do">
+                            <input placeholder="Nova tarefa" type="text" class="input__to_do">
+                        </div>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="mensagem__vazia">
+                <img src="./assets/MESSAGE_IF_EMPTY_TO_DO_LIST - zombie.svg" alt="Mensagem caso a lista esteja vazia com imagem">
+                <p class="p__mensagem_vazia">Crie algumas anotações! (∩ ͡° ͜ʖ ͡°)⊃━☆ﾟ. *</p>
+            </div>
+
+        </section>
+    </section>
+
+
+    <script src="./scripts/script.js"></script>
+    <script src="./scripts/to-dos.js"></script>
 </body>
 </html>

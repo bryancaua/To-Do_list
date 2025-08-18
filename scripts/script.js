@@ -1,7 +1,12 @@
 let contadorListas = 0; // contador global para gerar IDs únicos
+let listaAtivaId = null; // ID da lista que estamos visualizando
+let listaAtivaNome = null; // Nome da lista que estamos visualizando
 
 const botaoCriarLista = document.querySelector('.botao__criar_lista');
 const ulListas = document.getElementById('ul__listas');
+const telaListas = document.querySelector('.tela__listas');
+const telaTodos = document.querySelector('.tela__to_dos');
+const tituloTodos = document.querySelector('.titulo__lista_todos'); // título que mostra o nome da lista ativa
 
 botaoCriarLista.addEventListener('click', () => {
     contadorListas++; // incrementa para cada nova lista criada
@@ -21,7 +26,7 @@ botaoCriarLista.addEventListener('click', () => {
     botaoLixeiraListas.classList.add('lista__botao_lixeira');
     imgLixeira.classList.add('lista__lixeira');
     imgLixeira.setAttribute('src', './assets/Trash.svg');
-    imgListas.setAttribute('alt', 'Lixeira');
+    imgLixeira.setAttribute('alt', 'Lixeira');
 
     botaoListas.classList.add('botao__li_seta');
     divListas.classList.add('conteudo__lista');
@@ -59,12 +64,32 @@ botaoCriarLista.addEventListener('click', () => {
 });
 
 
+// Função excluir lista e entrar na lista
+
 ulListas.addEventListener('click', (e) => {
-    if (e.target.closest('.lista__lixeira')) {
-    const li = e.target.closest('li');
-    li.remove();
-    verificarListaVazia();
+const alvoLixeira = e.target.closest('.lista__lixeira');
+const alvoAbrir = e.target.closest('.icone__seta');
+
+    if (alvoLixeira) {
+        const li = e.target.closest('li');
+        li.remove();
+        verificarListaVazia();
+        return;
     }
+
+    if (alvoAbrir) {
+        const li = alvoAbrir.closest('li');
+
+        listaAtivaId = li.dataset.id;
+        listaAtivaNome = li.dataset.nome || 'Nova Lista';
+
+        telaListas.style.display = 'none';
+        telaTodos.style.display = 'block';
+        tituloTodos.textContent = listaAtivaNome;
+
+    }
+
+
 });
 
 
@@ -72,7 +97,7 @@ ulListas.addEventListener('click', (e) => {
 
 // Função para checar se a lista está vazia
 
-const mensagemListaVazia = document.querySelector('.mensagem__lista_vazia');
+const mensagemListaVazia = document.querySelector('.mensagem__vazia');
 
 function verificarListaVazia() {
     const itensDaLista = ulListas.querySelectorAll('li');
@@ -82,5 +107,7 @@ function verificarListaVazia() {
         mensagemListaVazia.style.display = 'none';
     }
 }
+
+
 
 verificarListaVazia();
