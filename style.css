@@ -184,6 +184,24 @@
   color: var(--second-200);
 }
 
+.botao__criar_to_do {
+    display: flex;
+  gap: 1rem;
+  align-items: center;
+  background-color: var(--dark-900);
+  border: var(--primary);
+  border-radius: 2rem;
+  padding: 1rem;
+  align-self: flex-end;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #f254513d;
+    box-shadow: 0 0 10px #f2545127;
+  }
+}
+
 .div__botao_voltar {
   display: flex;
   gap: 2rem;
