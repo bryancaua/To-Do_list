@@ -1,5 +1,6 @@
 import { verificarListaVazia } from './dom-utils.js';
 import { setListaAtiva } from './state.js';
+import { renderizarToDos } from './to-dos.js'
 
 let contadorListas = 0;
 
@@ -61,7 +62,7 @@ export function inicializarListas() {
         divListas.appendChild(imgSeta);
         botaoListas.appendChild(divListas);
 
-        // Montagem final
+
         li.appendChild(botaoLixeiraListas);
         li.appendChild(botaoListas);
         ulListas.appendChild(li);
@@ -86,6 +87,7 @@ export function inicializarListas() {
             telaListas.style.display = 'none';
             telaTodos.style.display = 'block';
             tituloTodos.textContent = li.dataset.nome;
+            renderizarToDos(); // ← carrega os to-dos da lista atual
         }
     });
 

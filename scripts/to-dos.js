@@ -1,5 +1,5 @@
 import { verificarListaVazia } from './dom-utils.js';
-import { listaAtivaNome } from './state.js';
+import { listas, listaAtivaId, listaAtivaNome } from './state.js';
 
 export function inicializarToDos() {
     const botaoCriarToDo = document.querySelector('.botao__criar_to_do');
@@ -18,6 +18,30 @@ export function inicializarToDos() {
 
     // Criação de novo To-Do
     botaoCriarToDo.addEventListener('click', () => {
+        const novoToDo = { texto: 'Nova tarefa', feito: false };
+
+        if (!listas[listaAtivaId]) {
+            listas[listaAtivaId] = [];
+        }
+
+        listas[listaAtivaId].push(novoToDo);
+        renderizarToDos();
+    });
+
+    // Atualiza título sempre que entrar nesta tela
+    tituloTodos.textContent = listaAtivaNome || 'TO DO | YOUR LISTS';
+    renderizarToDos();
+}
+
+export function renderizarToDos() {
+    const ulToDo = document.querySelector('.ul__to_do');
+    const mensagemVazia = document.querySelector('.tela__to_dos .mensagem__vazia');
+
+    ulToDo.innerHTML = '';
+
+    const toDos = listas[listaAtivaId] || [];
+
+    toDos.forEach(todo => {
         const li = document.createElement('li');
         li.classList.add('li__to_do');
 
@@ -30,23 +54,34 @@ export function inicializarToDos() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.classList.add('checkbox__to_do');
+        checkbox.checked = todo.feito;
+        checkbox.addEventListener('change', () => {
+            todo.feito = checkbox.checked;
+        });
+        
+        checkbox.addEventListener('click', () => {
+            if (checkbox.checked) {
+                input.style.textDecoration = 'line-through';    
+            } else {
+                input.style.textDecoration = 'none';   
+            }
+        })
 
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = 'Nova tarefa';
+        input.value = todo.texto;
         input.classList.add('input__to_do');
+        input.addEventListener('input', () => {
+            todo.texto = input.value;
+        });
 
         divLi.appendChild(checkbox);
         divLi.appendChild(input);
         botaoToDo.appendChild(divLi);
         li.appendChild(botaoToDo);
-
         ulToDo.appendChild(li);
-        verificarListaVazia(ulToDo, mensagemVazia);
     });
 
     verificarListaVazia(ulToDo, mensagemVazia);
-
-    // Atualiza título sempre que entrar nesta tela
-    tituloTodos.textContent = listaAtivaNome || 'TO DO | YOUR LISTS';
 }
+
