@@ -23,6 +23,7 @@
   background-color: var(--dark-900);
 }
 
+/* Estilo da tela de listas */
 
 .tela__listas {
   display: block;
@@ -153,9 +154,11 @@
 
   &::placeholder {
     color: var(--second-200);
-    opacity: 0.7; 
+    opacity: 0.5; 
   }
 }
+
+/* Estilos da tela do To-Do */
 
 .tela__to_dos {
   display: none;
@@ -259,6 +262,7 @@
   display: flex;
   gap: 1.25rem;
   margin-left: 1.5rem;
+  width: 100%;
 }
 
 .checkbox__to_do {
@@ -300,13 +304,18 @@
 .input__to_do {
   background: none;
   border: none;
+  width: 35%;
   font: var(--fonte-padrao);
   color: var(--second-200);
 
   &::placeholder {
     color: var(--second-200);
-    opacity: 0.7; 
+    opacity: 0.5; 
   }
+}
+
+.to__do_lixeira {
+  margin-right: 1rem;
 }
 
 

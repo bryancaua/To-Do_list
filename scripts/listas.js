@@ -62,7 +62,6 @@ export function inicializarListas() {
         divListas.appendChild(imgSeta);
         botaoListas.appendChild(divListas);
 
-
         li.appendChild(botaoLixeiraListas);
         li.appendChild(botaoListas);
         ulListas.appendChild(li);
