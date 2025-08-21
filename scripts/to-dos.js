@@ -94,6 +94,7 @@ export function renderizarToDos() {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     salvarToDoNome(input, li, todo);
+                    input.blur();
                 }
         });
 

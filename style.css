@@ -318,6 +318,10 @@
   margin-right: 1rem;
 }
 
+.prioridade-baixa { border-left: 5px solid green; }
+.prioridade-media { border-left: 5px solid orange; }
+.prioridade-alta { border-left: 5px solid red; }
+
 
 
 
