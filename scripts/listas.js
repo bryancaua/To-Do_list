@@ -81,14 +81,22 @@ export function inicializarListas() {
         imgSeta.src = './assets/CaretRight.svg';
         imgSeta.alt = 'Seta direita';
 
+        // evita salvar duas vezes (Enter + blur)
+        let salvando = false;
 
-        // Função que vai salvar o nome das listas 
         function salvarNome() {
+            if (salvando) return;
+            salvando = true;
+
             const nome = inputListas.value.trim() || 'Nova Lista';
             li.dataset.nome = nome;
             listas[id].nome = nome;
             salvarListas();
-            divListas.innerHTML = `${nome} <img class="icone__seta" src="./assets/CaretRight.svg" alt="Seta direita">`;
+
+            // mantém o input e normaliza o valor (sem trocar DOM)
+            inputListas.value = nome;
+
+            salvando = false;
         }
 
         inputListas.addEventListener('blur', salvarNome);
@@ -96,6 +104,8 @@ export function inicializarListas() {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 salvarNome();
+                // opcional: tirar o foco sem duplicar salvamento
+                inputListas.blur();
             }
         });
 

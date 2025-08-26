@@ -423,6 +423,11 @@
   .lista__item {
     margin: 1rem;
   }
+
+  .input__nome_lista {
+    max-width: 120px;
+    font-size: 16px;
+  }
 }
 
 
