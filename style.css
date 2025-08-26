@@ -426,6 +426,10 @@
   .botao__li_seta {
     padding: 0.5rem;
   }
+
+  .input__nome_lista {
+    width: 70%;
+  }
 }
 
 
