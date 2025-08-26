@@ -99,12 +99,12 @@ export function renderizarToDos() {
         const marcadorPrioridade = document.createElement('div');
         marcadorPrioridade.classList.add('marcador__prioridade', `prioridade-${todo.prioridade}`);
         marcadorPrioridade.addEventListener('click', () => {
-            // Fecha seletor se já estiver aberto
-            const seletorExistente = li.querySelector('.seletor__prioridade');
+            const seletorExistente = li.querySelector('.seletor__prioridade'); 
             if (seletorExistente) {
                 seletorExistente.remove();
                 return;
             }
+
             // Cria seletor de prioridade
             const seletor = document.createElement('div');
             seletor.classList.add('seletor__prioridade');
@@ -122,7 +122,6 @@ export function renderizarToDos() {
             li.appendChild(seletor);
         });
 
-        // Container para checkbox e input
         const divLi = document.createElement('div');
         divLi.classList.add('div__li_to_do');
 
@@ -148,14 +147,17 @@ export function renderizarToDos() {
             todo.texto = input.value;
             salvarListas();
         });
-        input.addEventListener('blur', () => {
-            const nome = input.value.trim() || 'Nova tarefa';
-            todo.texto = nome;
-            input.value = nome;
-            salvarListas();
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // evita quebra de linha
+                const nome = input.value.trim() || 'Nova tarefa';
+                todo.texto = nome;
+                input.value = nome;
+                salvarListas();
+                input.blur(); // força o blur para fechar edição
+            }
         });
 
-        // Ícone da lixeira (sem fundo branco)
         const toDoLixeira = document.createElement('img');
         toDoLixeira.classList.add('to__do_lixeira');
         toDoLixeira.src = './assets/Trash.svg';
@@ -172,6 +174,5 @@ export function renderizarToDos() {
         ulToDo.appendChild(li);
     });
 
-    // Mostra mensagem se não houver To-Dos
     verificarListaVazia(ulToDo, mensagemVazia);
 }
