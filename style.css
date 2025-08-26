@@ -419,6 +419,11 @@
   }
 }
 
+@media (max-width: 400px) {
+  .lista__item {
+    margin: 1rem;
+  }
+}
 
 
 

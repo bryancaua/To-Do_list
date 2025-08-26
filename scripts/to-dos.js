@@ -1,5 +1,6 @@
 import { verificarListaVazia } from './dom-utils.js';
-import { listas, listaAtivaId, listaAtivaNome } from './state.js';
+// Agora também importamos salvarListas para gravar no localStorage
+import { listas, listaAtivaId, listaAtivaNome, salvarListas } from './state.js';
 
 export function inicializarToDos() {
     const botaoCriarToDo = document.querySelector('.botao__criar_to_do');
@@ -7,7 +8,7 @@ export function inicializarToDos() {
     const telaListas = document.querySelector('.tela__listas');
     const telaTodos = document.querySelector('.tela__to_dos');
     const tituloTodos = document.querySelector('.titulo__lista_todos');
-    let proximoIdToDo = 0;
+    let proximoIdToDo = listas[listaAtivaId]?.length || 0; // inicia com base no que já existe
 
     // Voltar para tela de listas
     botaoVoltar.addEventListener('click', () => {
@@ -30,6 +31,8 @@ export function inicializarToDos() {
         }
 
         listas[listaAtivaId].push(novoToDo);
+
+        salvarListas(); // <-- salva no localStorage sempre que cria
         renderizarToDos();
     });
 
@@ -46,20 +49,20 @@ export function renderizarToDos() {
     ulToDo.innerHTML = '';
 
     //Event listener para apagar os To-dos
-
     ulToDo.addEventListener('click', (e) => {
         const apagarToDoLixeira = e.target.closest('.to__do_lixeira');
 
         if (apagarToDoLixeira) {
-                const li = e.target.closest('li');
-                const id = Number(li.dataset.id);
+            const li = e.target.closest('li');
+            const id = Number(li.dataset.id);
 
-                // Remove do array usando o ID
-                listas[listaAtivaId] = listas[listaAtivaId].filter(todo => todo.id !== id);
+            // Remove do array usando o ID
+            listas[listaAtivaId] = listas[listaAtivaId].filter(todo => todo.id !== id);
 
-                renderizarToDos();
-            }
-        });
+            salvarListas(); // <-- salva no localStorage sempre que apaga
+            renderizarToDos();
+        }
+    });
 
     const toDos = listas[listaAtivaId] || [];
     const toDosOrdenados = ordenarPorPrioridade(toDos);
@@ -93,6 +96,7 @@ export function renderizarToDos() {
         checkbox.checked = todo.feito;
         checkbox.addEventListener('change', () => {
             todo.feito = checkbox.checked;
+            salvarListas(); // <-- salva no localStorage ao marcar/desmarcar
         });
         
         checkbox.addEventListener('click', () => {
@@ -104,31 +108,33 @@ export function renderizarToDos() {
             todo.texto = nome;
             li.dataset.texto = nome; // salva no dataset do <li>
             input.value = nome;
+            salvarListas(); // <-- salva no localStorage ao editar nome
         }
 
         const input = document.createElement('input');
-            input.type = 'text';
-            input.placeholder = 'Nova tarefa';
-            input.value = todo.texto;
-            input.style.textDecoration = todo.feito ? 'line-through' : 'none';
-            checkbox.checked = todo.feito;
-            input.classList.add('input__to_do');
+        input.type = 'text';
+        input.placeholder = 'Nova tarefa';
+        input.value = todo.texto;
+        input.style.textDecoration = todo.feito ? 'line-through' : 'none';
+        checkbox.checked = todo.feito;
+        input.classList.add('input__to_do');
 
-            // Atualiza o texto conforme o usuário digita
-            input.addEventListener('input', () => {
-                todo.texto = input.value;
-            });
+        // Atualiza o texto conforme o usuário digita
+        input.addEventListener('input', () => {
+            todo.texto = input.value;
+            salvarListas(); // <-- salva no localStorage enquanto digita
+        });
 
-            input.addEventListener('blur', () => {
+        input.addEventListener('blur', () => {
+            salvarToDoNome(input, li, todo);
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
                 salvarToDoNome(input, li, todo);
-            });
-
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    salvarToDoNome(input, li, todo);
-                    input.blur();
-                }
+                input.blur();
+            }
         });
 
         const toDoLixeira = document.createElement('img');
@@ -136,35 +142,32 @@ export function renderizarToDos() {
         toDoLixeira.src = './assets/Trash.svg';
         toDoLixeira.alt = 'Lixeira';
 
-    
         const marcadorPrioridade = document.createElement('div');
         marcadorPrioridade.classList.add('marcador__prioridade', `prioridade-${todo.prioridade}`);
     
         marcadorPrioridade.addEventListener('click', () => {
-        const seletor = document.createElement('div');
-        seletor.classList.add('seletor__prioridade');
+            const seletor = document.createElement('div');
+            seletor.classList.add('seletor__prioridade');
 
-        ['baixa', 'normal', 'alta'].forEach(nivel => {
-            const opcao = document.createElement('div');
-            opcao.classList.add('opcao__prioridade', `prioridade-${nivel}`);
-            opcao.dataset.valor = nivel;
-            seletor.appendChild(opcao);
+            ['baixa', 'normal', 'alta'].forEach(nivel => {
+                const opcao = document.createElement('div');
+                opcao.classList.add('opcao__prioridade', `prioridade-${nivel}`);
+                opcao.dataset.valor = nivel;
+                seletor.appendChild(opcao);
 
-            opcao.addEventListener('click', () => {
-                todo.prioridade = nivel;
-                renderizarToDos(); // atualiza visual e reordena chamando a função de novo
+                opcao.addEventListener('click', () => {
+                    todo.prioridade = nivel;
+                    salvarListas(); // <-- salva no localStorage ao mudar prioridade
+                    renderizarToDos(); // atualiza visual e reordena chamando a função de novo
+                });
             });
+
+            // Remove seletor anterior se existir
+            const seletorExistente = li.querySelector('.seletor__prioridade');
+            if (seletorExistente) seletorExistente.remove();
+
+            li.appendChild(seletor);
         });
-
-        // Remove seletor anterior se existir
-        const seletorExistente = li.querySelector('.seletor__prioridade');
-        if (seletorExistente) seletorExistente.remove();
-
-        li.appendChild(seletor);
-    });
-
-
-
 
         divLi.appendChild(checkbox);
         divLi.appendChild(input);
@@ -179,5 +182,3 @@ export function renderizarToDos() {
 
     verificarListaVazia(ulToDo, mensagemVazia);
 }
-
-

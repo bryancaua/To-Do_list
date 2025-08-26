@@ -1,8 +1,8 @@
 import { verificarListaVazia } from './dom-utils.js';
-import { setListaAtiva } from './state.js';
-import { renderizarToDos } from './to-dos.js'
+import { setListaAtiva, listas, salvarListas } from './state.js';
+import { inicializarToDos } from './to-dos.js';
 
-let contadorListas = 0;
+let contadorListas = Object.keys(listas).length;
 
 export function inicializarListas() {
     const botaoCriarLista = document.querySelector('.botao__criar_lista');
@@ -12,15 +12,52 @@ export function inicializarListas() {
     const tituloTodos = document.querySelector('.titulo__lista_todos');
     const mensagemVazia = document.querySelector('.tela__listas .mensagem__vazia');
 
+    // Renderiza listas salvas
+    Object.entries(listas).forEach(([id]) => criarElementoLista(id));
+    verificarListaVazia(ulListas, mensagemVazia);
+
+    // Criar nova lista
     botaoCriarLista.addEventListener('click', () => {
         contadorListas++;
+        listas[String(contadorListas)] = { nome: '', todos: [] };
+        salvarListas();
+        criarElementoLista(String(contadorListas));
+        verificarListaVazia(ulListas, mensagemVazia);
+    });
 
+    // Eventos de clique nas listas
+    ulListas.addEventListener('click', (e) => {
+        const alvoLixeira = e.target.closest('.lista__lixeira');
+        const alvoAbrir = e.target.closest('.icone__seta');
+
+        // Excluir lista
+        if (alvoLixeira) {
+            const li = e.target.closest('li');
+            delete listas[li.dataset.id];
+            salvarListas();
+            li.remove();
+            verificarListaVazia(ulListas, mensagemVazia);
+            return;
+        }
+
+        // Abrir lista
+        if (alvoAbrir) {
+            const li = alvoAbrir.closest('li');
+            setListaAtiva(li.dataset.id, li.dataset.nome || 'Nova Lista');
+            telaListas.style.display = 'none';
+            telaTodos.style.display = 'block';
+            tituloTodos.textContent = li.dataset.nome;
+            inicializarToDos(); // agora listaAtivaId já está definida
+        }
+    });
+
+    // Função para criar elemento visual da lista
+    function criarElementoLista(id) {
         const li = document.createElement('li');
         li.classList.add('lista__item');
-        li.dataset.id = contadorListas;
-        li.dataset.nome = '';
+        li.dataset.id = id;
+        li.dataset.nome = listas[id].nome || '';
 
-        // Botão lixeira
         const botaoLixeiraListas = document.createElement('button');
         botaoLixeiraListas.classList.add('lista__botao_lixeira');
         const imgLixeira = document.createElement('img');
@@ -29,7 +66,6 @@ export function inicializarListas() {
         imgLixeira.alt = 'Lixeira';
         botaoLixeiraListas.appendChild(imgLixeira);
 
-        // Botão da lista + conteúdo
         const botaoListas = document.createElement('button');
         botaoListas.classList.add('botao__li_seta');
         const divListas = document.createElement('div');
@@ -37,6 +73,7 @@ export function inicializarListas() {
         const inputListas = document.createElement('input');
         inputListas.type = 'text';
         inputListas.placeholder = 'Nova Lista';
+        inputListas.value = listas[id].nome || '';
         inputListas.classList.add('input__nome_lista');
 
         const imgSeta = document.createElement('img');
@@ -44,9 +81,13 @@ export function inicializarListas() {
         imgSeta.src = './assets/CaretRight.svg';
         imgSeta.alt = 'Seta direita';
 
+
+        // Função que vai salvar o nome das listas 
         function salvarNome() {
             const nome = inputListas.value.trim() || 'Nova Lista';
             li.dataset.nome = nome;
+            listas[id].nome = nome;
+            salvarListas();
             divListas.innerHTML = `${nome} <img class="icone__seta" src="./assets/CaretRight.svg" alt="Seta direita">`;
         }
 
@@ -65,30 +106,5 @@ export function inicializarListas() {
         li.appendChild(botaoLixeiraListas);
         li.appendChild(botaoListas);
         ulListas.appendChild(li);
-
-        verificarListaVazia(ulListas, mensagemVazia);
-    });
-
-    // Delegação de eventos da UL
-    ulListas.addEventListener('click', (e) => {
-        const alvoLixeira = e.target.closest('.lista__lixeira');
-        const alvoAbrir = e.target.closest('.icone__seta');
-
-        if (alvoLixeira) {
-            e.target.closest('li').remove();
-            verificarListaVazia(ulListas, mensagemVazia);
-            return;
-        }
-
-        if (alvoAbrir) {
-            const li = alvoAbrir.closest('li');
-            setListaAtiva(li.dataset.id, li.dataset.nome || 'Nova Lista');
-            telaListas.style.display = 'none';
-            telaTodos.style.display = 'block';
-            tituloTodos.textContent = li.dataset.nome;
-            renderizarToDos(); // ← carrega os to-dos da lista atual
-        }
-    });
-
-    verificarListaVazia(ulListas, mensagemVazia);
+    }
 }
