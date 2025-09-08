@@ -150,6 +150,7 @@
   padding: 0.5rem;
   font: var(--fonte-padrao);
   color: var(--second-200);
+  width: 60%;
 
   &::placeholder {
     color: var(--second-200);
