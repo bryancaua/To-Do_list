@@ -4,13 +4,21 @@ Eu queria me desafiar: nada de frameworks, nada de atalhos. Só HTML + CSS + Jav
 O resultado? Uma To‑Do List completa, com:
 
 ✅ Criação, edição e exclusão de listas e tarefas
+
 ✅ Persistência de dados com localStorage 
+
 ✅ Estado global centralizado em state.js 
+
 ✅ Separação de responsabilidades por módulos (listas.js, to-dos.js, dom-utils.js) 
+
 ✅ Manipulação dinâmica de DOM (createElement, appendChild, dataset) 
+
 ✅ Ordenação de tarefas por prioridade (baixa, normal, alta) com seletor visual
-✅ Marcação de concluído com checkbox + estilização automática 
+
+✅ Marcação de concluído com checkbox + estilização automática
+
 ✅ Delegação de eventos para evitar memory leaks e duplicação de listeners 
+
 ✅ Feedback visual quando a lista está vazia
 
 🔍 O que aprendi no processo? 
